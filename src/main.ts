@@ -1,8 +1,9 @@
+import * as R from 'ramda'
+const { append, any, contains } = R
                                                     // function must return string
 const getFullName = (name: string, surname: string): string => {
     return name + ' ' + surname;
 }
-
 console.log(getFullName('Garrett', 'Hilberling'));
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,47 +101,87 @@ someElement.addEventListener('blur', (event) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-interface UserInterface {
-    getFullName(): string;
+// interface UserInterface {
+//     getFullName(): string;
+// }
+
+// // classes are syntactical sugar for working with prototypes
+// class User implements UserInterface {
+//     // private makes it so these cannot be accessed outside of the class
+//     private firstName: string;
+//     // protected makes it so a property can be used only in the class and its children
+//     protected lastName: string;
+//     readonly unchangableName: string; // readonly works similarly to a constant- it can't be overwritten
+//     static readonly maxAge = 50; // cannot be changed and only accessed in the class
+
+//     constructor(firstName: string, lastName: string) {
+//         this.firstName = firstName;
+//         this.lastName = lastName;
+//         this.unchangableName = firstName;
+//     }
+
+//     changeUnchangableName(): void {
+//         // this.unchangableName = 'foo'; // similar to how a constant cannot be overwritten
+//     }
+
+//     getFullName(): string {
+//         return this.firstName + ' ' + this.lastName;
+//     }
+// }
+
+// class Admin extends User { // a child of the User class
+//     private editor: string;
+
+//     setEditor(editor: string): void {
+//         this.editor = editor;
+//     }
+
+//     getEditor(): string {
+//         return this.editor;
+//     }
+// }
+
+// // const user = new User('Garrett', 'Hilberling');
+// // console.log(user.getFullName); // Garrett Hilberling
+// const admin = new Admin('foo', 'bar'); // inhereted everything from User class
+// console.log(admin.getFullName); // foo bar
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*                      Ramda Start                   */
+const updatedArray = append<string>('baz', ['foo', 'bar']);
+
+const searchStr = 'foo'; 
+// const _hasSearchedString = any<string>((el: string) => el.contains(searchStr), ['foooo', 'bar', 'baz']);
+/*                      Ramda End                     */
+
+        // using a generic data type <T>. extends object specifies we are expecting an object to be passed in
+const addId = <T extends object>(obj: T) => {
+    const id = Math.random().toString(16); // random number id (similar to using uuid)
+    return {
+        ...obj,
+        id
+    }
 }
-
-// classes are syntactical sugar for working with prototypes
-class User implements UserInterface {
-    // private makes it so these cannot be accessed outside of the class
-    private firstName: string;
-    // protected makes it so a property can be used only in the class and its children
-    protected lastName: string;
-    readonly unchangableName: string; // readonly works similarly to a constant- it can't be overwritten
-    static readonly maxAge = 50; // cannot be changed and only accessed in the class
-
-    constructor(firstName: string, lastName: string) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.unchangableName = firstName;
-    }
-
-    changeUnchangableName(): void {
-        // this.unchangableName = 'foo'; // similar to how a constant cannot be overwritten
-    }
-
-    getFullName(): string {
-        return this.firstName + ' ' + this.lastName;
-    }
+// Can put whatever you want in <> brackets, normally use T or V though
+interface UserInterface <T, V> {
+    name: string;
+    data: T;
+    meta: V;
 }
-
-class Admin extends User { // a child of the User class
-    private editor: string;
-
-    setEditor(editor: string): void {
-        this.editor = editor;
-    }
-
-    getEditor(): string {
-        return this.editor;
-    }
+// specifying <T> will be an object with property name meta whose value is a string  
+const user: UserInterface<{ meta: string }, string> = {
+    name: 'Jack',
+    data: {
+        meta: 'foo',
+    },
+    meta: 'bar',
 }
-
-const user = new User('Garrett', 'Hilberling');
-console.log(user.getFullName); // Garrett Hilberling
-const admin = new Admin('foo', 'bar'); // inhereted everything from User class
-console.log(admin.getFullName); // foo bar
+// demonstrates flexibility of <T>. defined here as an array of strings
+const user2: UserInterface<string[], string> = {
+    name: 'John',
+    data: ['foo', 'bar'],
+    meta: 'baz'
+}
+const result = addId(user);
+console.log('result: ', result);

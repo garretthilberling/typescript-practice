@@ -1,18 +1,18 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
+"use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
     };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+    return __assign.apply(this, arguments);
+};
+exports.__esModule = true;
+var R = require("ramda");
+var append = R.append, any = R.any, contains = R.contains;
 // function must return string
 var getFullName = function (name, surname) {
     return name + ' ' + surname;
@@ -61,36 +61,67 @@ someElement.addEventListener('blur', function (event) {
     var target = event.target;
     console.log('event', target.value); // instead of event.target.value in regular js
 });
-// classes are syntactical sugar for working with prototypes
-var User = /** @class */ (function () {
-    function User(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.unchangableName = firstName;
-    }
-    User.prototype.changeUnchangableName = function () {
-        // this.unchangableName = 'foo'; // similar to how a constant cannot be overwritten
-    };
-    User.prototype.getFullName = function () {
-        return this.firstName + ' ' + this.lastName;
-    };
-    User.maxAge = 50; // cannot be changed and only accessed in the class
-    return User;
-}());
-var Admin = /** @class */ (function (_super) {
-    __extends(Admin, _super);
-    function Admin() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Admin.prototype.setEditor = function (editor) {
-        this.editor = editor;
-    };
-    Admin.prototype.getEditor = function () {
-        return this.editor;
-    };
-    return Admin;
-}(User));
-var user = new User('Garrett', 'Hilberling');
-console.log(user.getFullName); // Garrett Hilberling
-var admin = new Admin('foo', 'bar'); // inhereted everything from User class
-console.log(admin.getFullName); // foo bar
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// interface UserInterface {
+//     getFullName(): string;
+// }
+// // classes are syntactical sugar for working with prototypes
+// class User implements UserInterface {
+//     // private makes it so these cannot be accessed outside of the class
+//     private firstName: string;
+//     // protected makes it so a property can be used only in the class and its children
+//     protected lastName: string;
+//     readonly unchangableName: string; // readonly works similarly to a constant- it can't be overwritten
+//     static readonly maxAge = 50; // cannot be changed and only accessed in the class
+//     constructor(firstName: string, lastName: string) {
+//         this.firstName = firstName;
+//         this.lastName = lastName;
+//         this.unchangableName = firstName;
+//     }
+//     changeUnchangableName(): void {
+//         // this.unchangableName = 'foo'; // similar to how a constant cannot be overwritten
+//     }
+//     getFullName(): string {
+//         return this.firstName + ' ' + this.lastName;
+//     }
+// }
+// class Admin extends User { // a child of the User class
+//     private editor: string;
+//     setEditor(editor: string): void {
+//         this.editor = editor;
+//     }
+//     getEditor(): string {
+//         return this.editor;
+//     }
+// }
+// // const user = new User('Garrett', 'Hilberling');
+// // console.log(user.getFullName); // Garrett Hilberling
+// const admin = new Admin('foo', 'bar'); // inhereted everything from User class
+// console.log(admin.getFullName); // foo bar
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*                      Ramda Start                   */
+var updatedArray = append('baz', ['foo', 'bar']);
+var searchStr = 'foo';
+// const _hasSearchedString = any<string>((el: string) => el.contains(searchStr), ['foooo', 'bar', 'baz']);
+/*                      Ramda End                     */
+// using a generic data type <T>. extends object specifies we are expecting an object to be passed in
+var addId = function (obj) {
+    var id = Math.random().toString(16); // random number id (similar to using uuid)
+    return __assign(__assign({}, obj), { id: id });
+};
+// specifying <T> will be an object with property name meta whose value is a string  
+var user = {
+    name: 'Jack',
+    data: {
+        meta: 'foo'
+    },
+    meta: 'bar'
+};
+// demonstrates flexibility of <T>. defined here as an array of strings
+var user2 = {
+    name: 'John',
+    data: ['foo', 'bar'],
+    meta: 'baz'
+};
+var result = addId(user);
+console.log('result: ', result);

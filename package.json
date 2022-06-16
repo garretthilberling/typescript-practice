@@ -18,5 +18,9 @@
   "homepage": "https://github.com/garretthilberling/typescript-practice#readme",
   "devDependencies": {
     "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@types/ramda": "^0.28.14",
+    "ramda": "^0.28.0"
   }
 }
