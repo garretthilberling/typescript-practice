@@ -149,9 +149,9 @@ someElement.addEventListener('blur', (event) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*                      Ramda Start                   */
-const updatedArray = append<string>('baz', ['foo', 'bar']);
+// const updatedArray = append<string>('baz', ['foo', 'bar']);
 
-const searchStr = 'foo'; 
+// const searchStr = 'foo'; 
 // const _hasSearchedString = any<string>((el: string) => el.contains(searchStr), ['foooo', 'bar', 'baz']);
 /*                      Ramda End                     */
 
@@ -185,3 +185,30 @@ const user2: UserInterface<string[], string> = {
 }
 const result = addId(user);
 console.log('result: ', result);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// const statuses = {
+//     notStarted: 0,
+//     inProgress: 1,
+//     done: 2
+// }
+
+// console.log(statuses.inProgress); // 1
+
+// enumerator. we can use enum as a value and as a data type
+enum StatusEnum { // use = instead of : for enums
+    NotStarted = 'not started',
+    InProgress = 'in progress',
+    Done = 'done'
+}
+
+interface Task {
+    id: string;
+    status: StatusEnum; // can only be values provided in the enum
+}
+
+let notStartedStatus: StatusEnum = StatusEnum.NotStarted;
+notStartedStatus = StatusEnum.Done;
+
+console.log(StatusEnum.InProgress)

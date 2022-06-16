@@ -100,8 +100,8 @@ someElement.addEventListener('blur', function (event) {
 // console.log(admin.getFullName); // foo bar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*                      Ramda Start                   */
-var updatedArray = append('baz', ['foo', 'bar']);
-var searchStr = 'foo';
+// const updatedArray = append<string>('baz', ['foo', 'bar']);
+// const searchStr = 'foo'; 
 // const _hasSearchedString = any<string>((el: string) => el.contains(searchStr), ['foooo', 'bar', 'baz']);
 /*                      Ramda End                     */
 // using a generic data type <T>. extends object specifies we are expecting an object to be passed in
@@ -125,3 +125,20 @@ var user2 = {
 };
 var result = addId(user);
 console.log('result: ', result);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// const statuses = {
+//     notStarted: 0,
+//     inProgress: 1,
+//     done: 2
+// }
+// console.log(statuses.inProgress); // 1
+// enumerator. we can use enum as a value and as a data type
+var StatusEnum;
+(function (StatusEnum) {
+    StatusEnum["NotStarted"] = "not started";
+    StatusEnum["InProgress"] = "in progress";
+    StatusEnum["Done"] = "done";
+})(StatusEnum || (StatusEnum = {}));
+var notStartedStatus = StatusEnum.NotStarted;
+notStartedStatus = StatusEnum.Done;
+console.log(StatusEnum.InProgress);
