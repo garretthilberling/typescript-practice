@@ -37,11 +37,11 @@ type ID = string;
 type PopularTag = string;
 type MaybePopularTag = PopularTag | null;
 
-interface UserInterface {
-    id: ID;
-    name: string;
-    surname: string;
-}
+// interface UserInterface {
+//     id: ID;
+//     name: string;
+//     surname: string;
+// }
 
 const popularTags: PopularTag[] = ['dragon', 'coffee'];
 
@@ -53,7 +53,7 @@ let pageName: string | number = '1';
 
 let errorMessage: string | null = null;
 
-let user: UserInterface | null = null;
+// let user: UserInterface | null = null;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,3 +97,50 @@ someElement.addEventListener('blur', (event) => {
     const target = event.target as HTMLInputElement;
     console.log('event', target.value); // instead of event.target.value in regular js
 });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+interface UserInterface {
+    getFullName(): string;
+}
+
+// classes are syntactical sugar for working with prototypes
+class User implements UserInterface {
+    // private makes it so these cannot be accessed outside of the class
+    private firstName: string;
+    // protected makes it so a property can be used only in the class and its children
+    protected lastName: string;
+    readonly unchangableName: string; // readonly works similarly to a constant- it can't be overwritten
+    static readonly maxAge = 50; // cannot be changed and only accessed in the class
+
+    constructor(firstName: string, lastName: string) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.unchangableName = firstName;
+    }
+
+    changeUnchangableName(): void {
+        // this.unchangableName = 'foo'; // similar to how a constant cannot be overwritten
+    }
+
+    getFullName(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
+}
+
+class Admin extends User { // a child of the User class
+    private editor: string;
+
+    setEditor(editor: string): void {
+        this.editor = editor;
+    }
+
+    getEditor(): string {
+        return this.editor;
+    }
+}
+
+const user = new User('Garrett', 'Hilberling');
+console.log(user.getFullName); // Garrett Hilberling
+const admin = new Admin('foo', 'bar'); // inhereted everything from User class
+console.log(admin.getFullName); // foo bar
