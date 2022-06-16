@@ -77,7 +77,23 @@ let s1: string = vAny;
                     // to avoid error
 let s2: string = vUnknown as string; // will not work because we are telling TypeScript we do not know the type
 
-let pageNumber: string = '1';
-let numericPageNumber: number = pageNumber as unknown as number; // known as type assertion
+// let pageNumber: string = '1';
+// let numericPageNumber: number = pageNumber as unknown as number; // known as type assertion
 // console.log(vAny.foo());
 // console.log(vUnknown.foo()); // will give error: property 'foo' does not exist
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let page: any = '1';
+// if we are using a library that has the type 'any' (out of our control) we can redefine the type by doing the following
+let pageNumber = page as string; // type assertion
+                                                        // CORRECT fix
+const someElement = document.querySelector('.foo') as HTMLInputElement;
+                            // a common incorrect fix for this issue
+console.log('someElement', (someElement as any).value);
+console.log('someElement', someElement.value);
+
+someElement.addEventListener('blur', (event) => {
+    const target = event.target as HTMLInputElement;
+    console.log('event', target.value); // instead of event.target.value in regular js
+});

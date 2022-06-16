@@ -24,7 +24,20 @@ var vUnknown = 10; // type unknown is a good alternative to type any
 var s1 = vAny;
 // to avoid error
 var s2 = vUnknown; // will not work because we are telling TypeScript we do not know the type
-var pageNumber = '1';
-var numericPageNumber = pageNumber; // known as type assertion
+// let pageNumber: string = '1';
+// let numericPageNumber: number = pageNumber as unknown as number; // known as type assertion
 // console.log(vAny.foo());
 // console.log(vUnknown.foo()); // will give error: property 'foo' does not exist
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var page = '1';
+// if we are using a library that has the type 'any' (out of our control) we can redefine the type by doing the following
+var pageNumber = page; // type assertion
+// CORRECT fix
+var someElement = document.querySelector('.foo');
+// a common incorrect fix for this issue
+console.log('someElement', someElement.value);
+console.log('someElement', someElement.value);
+someElement.addEventListener('blur', function (event) {
+    var target = event.target;
+    console.log('event', target.value); // instead of event.target.value in regular js
+});
